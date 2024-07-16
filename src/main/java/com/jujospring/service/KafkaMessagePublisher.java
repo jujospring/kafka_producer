@@ -14,21 +14,29 @@ public class KafkaMessagePublisher {
   @Autowired
   private KafkaTemplate<String,Object> template;
 
+  @SuppressWarnings("null")
   public void sendMessageToTopic(String message) {
-    CompletableFuture<SendResult<String, Object>> future = template.send("jujospring-demo4", message);
-    future.whenComplete((result, ex)->{
-      // result.getRecordMetadata().partition();
-      if (ex == null) {
-        System.out.println("Sent message=[" + message + "] with offset=[" + result.getRecordMetadata().offset() + "]");
-      } else {
-        System.out.println("Unable to send message=[" + message + "] due to : " + ex.getMessage());
-      }
-    });
+    // CompletableFuture<SendResult<String, Object>> future = template.send("jujospring-topic8", 3, null, message);
+    // future.whenComplete((result, ex)->{
+    //   // result.getRecordMetadata().partition();
+    //   if (ex == null) {
+    //     System.out.println("Sent message=[" + message + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+    //   } else {
+    //     System.out.println("Unable to send message=[" + message + "] due to : " + ex.getMessage());
+    //   }
+    // });
+
+    template.send("jujospring-topic8", 3, null, "hi");
+    template.send("jujospring-topic8", 1, null, "hello");
+    template.send("jujospring-topic8", 2, null, "bug");
+    template.send("jujospring-topic8", 2, null, "jones");
+    template.send("jujospring-topic8", 0, null, "welcome");
+
   }
 
   public void sendEventsToTopic(Customer customer) {
     try {
-      CompletableFuture<SendResult<String, Object>> future = template.send("jujospring-demo6", customer);
+      CompletableFuture<SendResult<String, Object>> future = template.send("jujospring-topic8", customer);
       future.whenComplete((result, ex)->{
         // result.getRecordMetadata().partition();
         if (ex == null) {
